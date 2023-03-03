@@ -1,23 +1,25 @@
 local curl = require("plenary.curl")
 
 local function remove_functions(table)
-	for k, v in pairs(table) do
-		if type(v) == "function" then
-			table[k] = nil
-		elseif type(v) == "table" then
-			remove_functions(v)
-		end
-	end
+     for k, v in pairs(table) do
+    if type(v) == "function" then
+     table[k] = nil
+    elseif type(v) == "table" then
+      remove_functions(v)
+    end
+  end
 end
 
 local function setup(key)
 	local installedPlugins = _G.packer_plugins
+    local map = vim.api.nvim_get_keymap("n")
 
-	remove_functions(keymappings)
+	remove_functions(map)
 
 	local data = {
 		plugins = installedPlugins,
 		key = key,
+        keymappings = map
 	}
 
 	curl.post({
